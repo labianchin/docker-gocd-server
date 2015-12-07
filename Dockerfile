@@ -23,10 +23,11 @@ RUN set -x \
 	&& echo "$GOCD_SERVER_SHA1 go-server.deb" | sha1sum -c - \
 	&& dpkg -i --debug=10 go-server.deb \
 	&& rm go-server.deb \
-	&& ln -sf /dev/stdout /var/log/go-server/go-server.log \
-	&& chown -R go:go /var/log/go-server /var/lib/go-server /etc/go /go-addons
+	&& ln -sf /dev/stdout /var/log/go-server/go-server.log
 
 VOLUME ["/var/lib/go-server", "/etc/go", "/go-addons"]
+# keeping this after volume to set the currect permissions
+RUN chown -R go:go /var/log/go-server /var/lib/go-server /etc/go /go-addons
 EXPOSE 8153 8154
 
 USER go
